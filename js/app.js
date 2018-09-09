@@ -1,5 +1,5 @@
-const contract_address = "0xd9b5b27b1f4d1b70cb2f22e4553e3529b8f76d2c";
-const abi = [{"constant":true,"inputs":[],"name":"getRanomSecret","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"min_deposit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"secretMessage","type":"string"},{"name":"hash","type":"bytes32"},{"name":"hide","type":"bool"}],"name":"createNewSecret","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"hash","type":"bytes32"},{"name":"answer","type":"bytes32"}],"name":"postNewAnswer","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"secretHashes","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"hash","type":"bytes32"},{"name":"answer","type":"bytes32"},{"name":"randomString","type":"string"}],"name":"openSecret","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"hash","type":"bytes32"}],"name":"getSecretByHash","outputs":[{"name":"value","type":"uint256"},{"name":"owner","type":"address"},{"name":"content","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}]
+const contract_address = "0x5002e51d7b85b639d056a94ae4a38606e66be898";
+const abi = [{"constant":true,"inputs":[],"name":"getRanomSecret","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"min_deposit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"secretMessage","type":"string"},{"name":"hash","type":"bytes32"},{"name":"hide","type":"bool"}],"name":"createNewSecret","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"hashesLength","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"hash","type":"bytes32"},{"name":"answer","type":"bytes32"}],"name":"postNewAnswer","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"secretHashes","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"hash","type":"bytes32"},{"name":"answer","type":"bytes32"},{"name":"randomString","type":"string"}],"name":"openSecret","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"hash","type":"bytes32"}],"name":"getSecretByHash","outputs":[{"name":"value","type":"uint256"},{"name":"owner","type":"address"},{"name":"content","type":"string"},{"name":"hasOpened","type":"bool"},{"name":"userWin","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"}];
 var contract = web3.eth.contract(abi).at(contract_address);
 
 function _Connect(callback){
@@ -194,6 +194,9 @@ function setSubscription(authorAddr) {
 function subscribeAuthor(ethAddr, authorAddr) {
     var cmd = "{\"method\": \"subscribe_to_author\", \"params\": [\"dw-" + ethAddr + "\", \"dw-" + authorAddr + "\", \"1\", \"DCT\", false], \"id\": 5}";
     getWs(2, cmd);
+    var local = localStorage.getItem(authorAddr);
+    local.push("dw-" + ethAddr);
+    localStorage.setItem(authorAddr, local);
 }
 
 function createNewDecentAccount(ethAddr) {
@@ -201,9 +204,3 @@ function createNewDecentAccount(ethAddr) {
     client_address = ethAddr;
     getWs(3, cmd);
 }
-
-function sendMessage() {
-
-}
-
-
